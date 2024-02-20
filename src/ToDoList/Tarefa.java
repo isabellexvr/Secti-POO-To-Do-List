@@ -11,4 +11,8 @@ public class Tarefa {
         this.status = false;
     }
 
+    void toggleStatus(){
+        this.status = !status;
+    }
+
 }

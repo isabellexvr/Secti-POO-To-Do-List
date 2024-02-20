@@ -10,5 +10,10 @@ public class Usuario {
 
     }
 
+    void marcarOuDesmarcar(int indexTarefa, ArrayList<Tarefa> tarefas){
+        Tarefa tarefaAntiga = tarefas.get(indexTarefa);
+        tarefaAntiga.toggleStatus();
+    }
+
 
 }
