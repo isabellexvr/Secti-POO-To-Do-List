@@ -19,7 +19,7 @@ public class Usuario {
         tarefas.add(tarefa);
     }
 
-    public ArrayList<Tarefa> getTarefas() {
+    public ArrayList<Tarefa> getAllTarefas() {
         return tarefas;
     }
 
@@ -27,6 +27,8 @@ public class Usuario {
         if (indexTarefa >= 0 && indexTarefa < tarefas.size()) {
             Tarefa tarefa = tarefas.get(indexTarefa);
             tarefa.toggleStatus();
+            String str = tarefa.status() ? "marcada" : "desmarcada";
+            System.out.println("Tarefa de título \\\"" + tarefa.getTitulo() + "\\\"" + str + " com sucesso!");
         }
     }
 

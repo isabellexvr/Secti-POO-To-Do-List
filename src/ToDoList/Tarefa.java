@@ -9,12 +9,12 @@ public class Tarefa {
     private String categoria, titulo, descricao;
     private Date dataCriacao, prazo;
 
-    public Tarefa(String categoria, String titulo, String descricao, Date dataCriacao, Date prazo) {
+    public Tarefa(String categoria, String titulo, String descricao, Date prazo) {
         this.categoria = categoria;
         this.titulo = titulo;
         this.descricao = descricao;
         this.status = false;
-        this.dataCriacao = dataCriacao;
+        this.dataCriacao = new Date();
         this.prazo = prazo;
     }
 
@@ -26,7 +26,9 @@ public class Tarefa {
         return titulo;
     }
 
-    public boolean isStatus() {
+    public String getDescricao(){return descricao;}
+
+    public boolean status() {
         return status;
     }
 
@@ -41,7 +43,7 @@ public class Tarefa {
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        String statusStr = isStatus() ? "Concluída" : "Pendente";
+        String statusStr = status() ? "Concluída" : "Pendente";
         String prazoStr = (prazo != null) ? sdf.format(prazo) : "Sem prazo";
         return String.format("%s (Status: %s, Criada em: %s, Prazo: %s)", titulo, statusStr, sdf.format(dataCriacao), prazoStr);
     }
