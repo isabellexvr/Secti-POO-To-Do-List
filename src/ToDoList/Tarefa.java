@@ -4,15 +4,22 @@ public class Tarefa {
     boolean status;
     String categoria, titulo, descricao;
 
-    Tarefa(String categoria, String titulo, String descricao){
+    public Tarefa(String categoria, String titulo, String descricao) {
         this.categoria = categoria;
         this.titulo = titulo;
         this.descricao = descricao;
         this.status = false;
     }
 
-    void toggleStatus(){
-        this.status = !status;
+    public String getTitulo() {
+        return this.titulo;
     }
 
+    public boolean isStatus() {
+        return this.status;
+    }
+
+    public void toggleStatus() {
+        this.status = !this.status;
+    }
 }
