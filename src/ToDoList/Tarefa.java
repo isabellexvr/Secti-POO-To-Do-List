@@ -1,25 +1,48 @@
+// Tarefa.java
 package src.ToDoList;
 
-public class Tarefa {
-    boolean status;
-    String categoria, titulo, descricao;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-    public Tarefa(String categoria, String titulo, String descricao) {
+public class Tarefa {
+    private boolean status;
+    private String categoria, titulo, descricao;
+    private Date dataCriacao, prazo;
+
+    public Tarefa(String categoria, String titulo, String descricao, Date dataCriacao, Date prazo) {
         this.categoria = categoria;
         this.titulo = titulo;
         this.descricao = descricao;
         this.status = false;
+        this.dataCriacao = dataCriacao;
+        this.prazo = prazo;
+    }
+
+    public Date getPrazo() {
+        return prazo;
     }
 
     public String getTitulo() {
-        return this.titulo;
+        return titulo;
     }
 
     public boolean isStatus() {
-        return this.status;
+        return status;
     }
 
     public void toggleStatus() {
         this.status = !this.status;
+    }
+
+    public Date getDataCriacao() {
+        return dataCriacao;
+    }
+
+    @Override
+    public String toString() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String statusStr = isStatus() ? "Concluída" : "Pendente";
+        String prazoStr = (prazo != null) ? sdf.format(prazo) : "Sem prazo";
+        return String.format("%s (Status: %s, Criada em: %s, Prazo: %s)", titulo, statusStr, sdf.format(dataCriacao), prazoStr);
     }
 }

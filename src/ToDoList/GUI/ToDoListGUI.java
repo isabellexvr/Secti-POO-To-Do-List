@@ -1,3 +1,4 @@
+// ToDoListGUI.java
 package src.ToDoList.GUI;
 
 import src.ToDoList.Usuario;
@@ -5,8 +6,9 @@ import src.ToDoList.Tarefa;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.util.Date;
 
 public class ToDoListGUI extends JFrame {
     private Usuario usuario;
@@ -22,89 +24,98 @@ public class ToDoListGUI extends JFrame {
         initGUI();
     }
 
-    private void initGUI() {
-        setTitle("To-Do List");
-        setSize(400, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public void exibir() {
+        SwingUtilities.invokeLater(() -> setVisible(true));
+    }
 
-        campoTarefa = new JTextField();
-        campoDescricao = new JTextArea();
-        botaoAdicionar = new JButton("Adicionar");
-        botaoRemover = new JButton("Remover");
+    private void initGUI() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("To-Do List");
+        setSize(400, 300);
+        setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel(new BorderLayout());
+
+        campoTarefa = new JTextField(20);
+        campoTarefa.setText("Digite Sua Tarefa:");
+        campoTarefa.setForeground(Color.GRAY);
+        campoTarefa.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (campoTarefa.getText().equals("Digite Sua Tarefa:")) {
+                    campoTarefa.setText("");
+                    campoTarefa.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (campoTarefa.getText().isEmpty()) {
+                    campoTarefa.setForeground(Color.GRAY);
+                    campoTarefa.setText("Digite Sua Tarefa:");
+                }
+            }
+        });
+
+        campoDescricao = new JTextArea(5, 20);
+        JScrollPane scrollDescricao = new JScrollPane(campoDescricao);
+
+        botaoAdicionar = new JButton("Adicionar Tarefa");
+        botaoRemover = new JButton("Remover Tarefa");
+
         model = new DefaultListModel<>();
         listaTarefas = new JList<>(model);
-
-        setLayout(new BorderLayout());
-
         JScrollPane scrollPane = new JScrollPane(listaTarefas);
-        add(scrollPane, BorderLayout.CENTER);
 
-        JPanel painelAdicionar = new JPanel(new BorderLayout());
+        panel.add(campoTarefa, BorderLayout.NORTH);
+        panel.add(scrollDescricao, BorderLayout.CENTER);
+        panel.add(botaoAdicionar, BorderLayout.SOUTH);
 
-        JPanel painelBotoes = new JPanel(new FlowLayout());  // Alterado para FlowLayout
-        painelBotoes.add(botaoAdicionar);
-        painelBotoes.add(botaoRemover);
+        JPanel botoesPanel = new JPanel();
+        botoesPanel.setLayout(new BoxLayout(botoesPanel, BoxLayout.Y_AXIS));
+        botoesPanel.add(botaoRemover);
+        botoesPanel.add(Box.createVerticalStrut(10));
+        botoesPanel.add(scrollPane);
+        panel.add(botoesPanel, BorderLayout.EAST);
 
-        painelAdicionar.add(campoTarefa, BorderLayout.NORTH);
-        painelAdicionar.add(campoDescricao, BorderLayout.CENTER);
-        painelAdicionar.add(painelBotoes, BorderLayout.SOUTH);
+        add(panel);
 
-        add(painelAdicionar, BorderLayout.SOUTH);
+        botaoAdicionar.addActionListener(e -> adicionarTarefa());
+        botaoRemover.addActionListener(e -> removerTarefa());
 
-        botaoAdicionar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                adicionarTarefa();
-            }
-        });
-
-        botaoRemover.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                removerTarefa();
-            }
-        });
-
-        listaTarefas.setCellRenderer(new TarefaListRenderer());
+        setVisible(true);
     }
 
     private void adicionarTarefa() {
-        String novaTarefa = campoTarefa.getText();
-        String descricao = campoDescricao.getText();
-        if (!novaTarefa.isEmpty()) {
-            Tarefa tarefa = new Tarefa("Geral", novaTarefa, descricao);
-            usuario.adicionarTarefa(tarefa);
-            model.addElement(tarefa);
-            campoTarefa.setText("");
-            campoDescricao.setText("");
-        }
+        SwingUtilities.invokeLater(() -> {
+            String novaTarefa = campoTarefa.getText();
+            String descricao = campoDescricao.getText();
+            if (!novaTarefa.isEmpty() && !novaTarefa.equals("Digite Sua Tarefa:")) {
+                Date dataCriacao = new Date();
+                Date prazo = obterPrazo();
+
+                Tarefa tarefa = new Tarefa("Geral", novaTarefa, descricao, dataCriacao, prazo);
+                usuario.adicionarTarefa(tarefa);
+                model.addElement(tarefa);
+                campoTarefa.setText("Digite Sua Tarefa:");
+                campoTarefa.setForeground(Color.GRAY);
+                campoDescricao.setText("");
+            }
+        });
+    }
+
+    private Date obterPrazo() {
+        // Adicione aqui a lógica para obter a data de prazo desejada
+        return null;
     }
 
     private void removerTarefa() {
-        int indiceSelecionado = listaTarefas.getSelectedIndex();
-        if (indiceSelecionado != -1) {
-            usuario.removerTarefa(indiceSelecionado);
-            model.remove(indiceSelecionado);
-        }
-    }
-
-    private class TarefaListRenderer extends DefaultListCellRenderer {
-        @Override
-        public Component getListCellRendererComponent(
-                JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-
-            if (value instanceof Tarefa) {
-                Tarefa tarefa = (Tarefa) value;
-                String status = tarefa.isStatus() ? "Concluída" : "Pendente";
-                setText(tarefa.getTitulo() + " (Status: " + status + ")");
+        SwingUtilities.invokeLater(() -> {
+            int indiceSelecionado = listaTarefas.getSelectedIndex();
+            if (indiceSelecionado != -1) {
+                usuario.removerTarefa(indiceSelecionado);
+                model.remove(indiceSelecionado);
             }
-
-            return this;
-        }
-    }
-
-    public void exibir() {
-        setVisible(true);
+        });
     }
 }
