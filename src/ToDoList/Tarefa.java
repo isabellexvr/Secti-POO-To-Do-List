@@ -28,6 +28,10 @@ public class Tarefa {
 
     public String getDescricao(){return descricao;}
 
+    public String getCategoria(){
+        return categoria;
+    }
+
     public boolean status() {
         return status;
     }

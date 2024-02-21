@@ -37,7 +37,7 @@ public class Main {
                         System.out.println("Todas as tarefas de " + nomeUsuario + ":");
                         tasks.forEach((tarefa) ->{
                             int index = tasks.indexOf(tarefa) + 1;
-                            System.out.println(index + ". " + tarefa.getTitulo());
+                            System.out.println("\t" + index + ". " + tarefa.getTitulo());
                             System.out.println("\t" + tarefa.getDescricao());
                             System.out.println("\t(Status: " + (tarefa.status() ? "Concluída" : "Pendente") +
                                                     ". Criada em: " + tarefa.getDataCriacao() +
@@ -55,11 +55,40 @@ public class Main {
                     System.out.println("2. Por categoria");
                     int opcao = input.nextInt();
                     if(opcao == 1){
+                        System.out.println("Insira 1 para Farefas Pendentes");
+                        System.out.println("Insira 2 para Tarefas Concluídas");
+                        int status = input.nextInt();
+                        input.nextLine();
+                        if(status == 1) {
+                            ArrayList<Tarefa> tarefasPorStatus = new ArrayList<>();
+                           tarefasPorStatus = consultarPorStatus(usuario, true);
+                           for (Tarefa t : tarefasPorStatus) {
+                            int index = tarefasPorStatus.indexOf(t) + 1;
+                            System.out.println("\t" + index + ". " + t.getTitulo());
+                            System.out.println("\t" + t.getDescricao());
+                            System.out.println("\t(Status: " + (t.status() ? "Concluída" : "Pendente") +
+                                                    ". Criada em: " + t.getDataCriacao() +
+                                                    ". Prazo: " + t.getPrazo() + ")");
+                           }
+                        } else if (status == 2 ) {
+                            ArrayList<Tarefa> tarefasPorStatus = new ArrayList<>();
+                            tarefasPorStatus = consultarPorStatus(usuario, false);
+                            for (Tarefa t : tarefasPorStatus) {
+                             int index = tarefasPorStatus.indexOf(t) + 1;
+                             System.out.println("\t" + index + ". " + t.getTitulo());
+                             System.out.println("\t" + t.getDescricao());
+                             System.out.println("\t(Status: " + (t.status() ? "Concluída" : "Pendente") +
+                                                     ". Criada em: " + t.getDataCriacao() +
+                                                     ". Prazo: " + t.getPrazo() + ")");
+                            }
+                            //consultarPorStatus(usuario, false);
+                        } 
 
+                        
                     }else if(opcao == 2){
-
+                        String categoria = input.nextLine();
+                        consultarPorCategoria(usuario, categoria);
                     }
-                    input.nextLine();
                     continuarOuSair(input, nomeUsuario);
                     break;
                 case 3:
@@ -79,7 +108,9 @@ public class Main {
                     System.out.println("Até quando pretende realizar essa tarefa?");
                     Date prazo = obterPrazo(input);
 
-                    Tarefa nova_task = new Tarefa(categorias.get(selected_category), title, description, prazo);
+                    String cat = categorias.get(selected_category - 1);
+                    //System.out.println(cat);
+                    Tarefa nova_task = new Tarefa(cat, title, description, prazo);
                     usuario.adicionarTarefa(nova_task);
 
                     System.out.println("Tarefa adicionada com sucesso!");
@@ -95,8 +126,8 @@ public class Main {
                 case 5:
                     System.out.println("Digite o índice da tarefa para deletar:");
                     int indiceDeletar = input.nextInt();
-                    input.nextLine(); // Consumir a quebra de linha após o número
-                    //toDoList.deletarTarefa(indiceDeletar);
+                    input.nextLine();
+                    usuario.removerTarefa(indiceDeletar);
                     continuarOuSair(input, nomeUsuario);
                     break;
                 case 6:
@@ -104,6 +135,11 @@ public class Main {
                     gui.exibir();
                     break;
                 case 7:
+                    System.out.println("Insira o nome da nova categoria: ");
+                    String nomeCategoria = input.nextLine();
+                    categorias.add(nomeCategoria);
+                    break;
+                case 8:
                     System.out.println("Saindo...");
                     System.exit(0);
                 default:
@@ -114,12 +150,31 @@ public class Main {
         }
     }
 
-    public static void consultarPorCategoria(){
 
+    public static ArrayList<Tarefa> consultarPorCategoria(Usuario usuario, String categoria){
+        ArrayList<Tarefa> filtrado = new ArrayList<>();
+
+        for(int i=0; i <usuario.getAllTarefas().size(); i++){
+            
+            if(usuario.getAllTarefas().get(i).getCategoria().equals(categoria)){
+                filtrado.add(usuario.getAllTarefas().get(i));
+            }
+        }
+
+        return filtrado;
     }
 
-    public static void consultarPorStatus(){
+    public static ArrayList<Tarefa> consultarPorStatus(Usuario usuario, boolean status){
+        ArrayList<Tarefa> filtrado = new ArrayList<>();
 
+        for(int i=0; i <usuario.getAllTarefas().size(); i++){
+            
+            if(usuario.getAllTarefas().get(i).status() == status){
+                filtrado.add(usuario.getAllTarefas().get(i));
+            }
+        }
+
+        return filtrado;
     }
 
     public static void continuarOuSair(Scanner input, String nomeUsuario) {
@@ -151,7 +206,8 @@ public class Main {
         System.out.println("4. Marcar ou desmarcar tarefa");
         System.out.println("5. Deletar tarefa");
         System.out.println("6. Abrir GUI");
-        System.out.println("7. Sair");
+        System.out.println("7. Adicionar nova categoria");
+        System.out.println("8. Sair");
     }
 
     private static Date obterPrazo(Scanner input) {
