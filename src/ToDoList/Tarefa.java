@@ -1,4 +1,3 @@
-// Tarefa.java
 package src.ToDoList;
 
 import java.text.SimpleDateFormat;
@@ -8,14 +7,19 @@ public class Tarefa {
     private boolean status;
     private String categoria, titulo, descricao;
     private Date dataCriacao, prazo;
+    private int indice;
 
-    public Tarefa(String categoria, String titulo, String descricao, Date prazo) {
+    public Tarefa(String categoria, String titulo, String descricao, Date prazo,int indice) {
         this.categoria = categoria;
         this.titulo = titulo;
         this.descricao = descricao;
         this.status = false;
         this.dataCriacao = new Date();
         this.prazo = prazo;
+        this.indice = indice;
+    }
+    public void setIndice(int indice) {
+        this.indice = indice;
     }
 
     public Date getPrazo() {
@@ -44,6 +48,9 @@ public class Tarefa {
         return dataCriacao;
     }
 
+    public int getIndice() {
+        return indice;
+    }
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");

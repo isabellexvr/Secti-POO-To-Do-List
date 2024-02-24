@@ -5,10 +5,12 @@ import java.util.ArrayList;
 public class Usuario {
     private String nome;
     private ArrayList<Tarefa> tarefas;
+    private int indiceAtual;
 
     public Usuario(String nome) {
         this.nome = nome;
         this.tarefas = new ArrayList<>();
+        this.indiceAtual = 1;
     }
 
     public String getNome() {
@@ -16,7 +18,16 @@ public class Usuario {
     }
 
     public void adicionarTarefa(Tarefa tarefa) {
+        tarefa.setIndice(indiceAtual++);
         tarefas.add(tarefa);
+    }
+
+    public int getIndiceAtual() {
+        return indiceAtual;
+    }
+
+    public ArrayList<Tarefa> getallTarefas() {
+        return tarefas;
     }
 
     public ArrayList<Tarefa> getAllTarefas() {
@@ -34,7 +45,10 @@ public class Usuario {
 
     public void removerTarefa(int indexTarefa) {
         if (indexTarefa >= 0 && indexTarefa < tarefas.size()) {
-            tarefas.remove(indexTarefa);
+            Tarefa tarefaRemovida = tarefas.remove(indexTarefa);
+            System.out.println("Tarefa \"" + tarefaRemovida.getTitulo() + "\" removida com sucesso!");
+        } else {
+            System.out.println("Índice inválido, nenhuma tarefa removida.");
         }
     }
 }

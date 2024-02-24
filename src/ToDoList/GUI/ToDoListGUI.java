@@ -91,10 +91,9 @@ public class ToDoListGUI extends JFrame {
             String novaTarefa = campoTarefa.getText();
             String descricao = campoDescricao.getText();
             if (!novaTarefa.isEmpty() && !novaTarefa.equals("Digite Sua Tarefa:")) {
-                Date dataCriacao = new Date();
                 Date prazo = obterPrazo();
 
-                Tarefa tarefa = new Tarefa("Geral", novaTarefa, descricao, prazo);
+                Tarefa tarefa = new Tarefa("Geral", novaTarefa, descricao, prazo, model.size() + 1);
                 usuario.adicionarTarefa(tarefa);
                 model.addElement(tarefa);
                 campoTarefa.setText("Digite Sua Tarefa:");

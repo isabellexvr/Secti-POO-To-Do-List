@@ -1,4 +1,5 @@
 package src.ToDoList;
+
 import src.ToDoList.GUI.ToDoListGUI;
 
 import java.text.ParseException;
@@ -10,6 +11,7 @@ import java.util.Arrays;
 
 public class Main {
     static ArrayList<String> categorias = new ArrayList<>(Arrays.asList("Lazer", "Trabalho", "Estudos"));
+
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         System.out.print("Digite seu nome: ");
@@ -29,63 +31,59 @@ public class Main {
 
             switch (escolha) {
                 case 1:
-                    ArrayList<Tarefa> tasks =  usuario.getAllTarefas();
+    ArrayList<Tarefa> tasks =  usuario.getAllTarefas();
 
-                    if(tasks.isEmpty()){
-                        System.out.println("Você ainda não tem tarefas.");
-                    }else{
-                        System.out.println("Todas as tarefas de " + nomeUsuario + ":");
-                        tasks.forEach((tarefa) ->{
-                            int index = tasks.indexOf(tarefa) + 1;
-                            System.out.println("\t" + index + ". " + tarefa.getTitulo());
-                            System.out.println("\t" + tarefa.getDescricao());
-                            System.out.println("\t(Status: " + (tarefa.status() ? "Concluída" : "Pendente") +
-                                                    ". Criada em: " + tarefa.getDataCriacao() +
-                                                    ". Prazo: " + tarefa.getPrazo() + ")");
-                            }
-
-                        );
-                    }
-
-                    continuarOuSair(input, nomeUsuario);
-                    break;
+    if (tasks.isEmpty()) {
+        System.out.println("Você ainda não tem tarefas.");
+    } else {
+        System.out.println("Todas as tarefas de " + nomeUsuario + ":");
+        for (Tarefa tarefa : tasks) {
+            int index = tasks.indexOf(tarefa) + 1;
+            System.out.println("\t" + index + ". " + tarefa.getTitulo());
+            System.out.println("\t" + tarefa.getDescricao());
+            System.out.println("\t(Status: " + (tarefa.status() ? "Concluída" : "Pendente") +
+                    ". Criada em: " + tarefa.getDataCriacao() +
+                    ". Prazo: " + tarefa.getPrazo() + ")");
+        }
+    }
+    continuarOuSair(input, nomeUsuario);
+    break;
                 case 2:
                     System.out.println("Como quer consultar a tarefa?");
                     System.out.println("1. Por status");
                     System.out.println("2. Por categoria");
                     int opcao = input.nextInt();
-                    if(opcao == 1){
+                    if (opcao == 1) {
                         System.out.println("Insira 1 para Farefas Pendentes");
                         System.out.println("Insira 2 para Tarefas Concluídas");
                         int status = input.nextInt();
                         input.nextLine();
-                        if(status == 1) {
+                        if (status == 1) {
                             ArrayList<Tarefa> tarefasPorStatus = new ArrayList<>();
-                           tarefasPorStatus = consultarPorStatus(usuario, true);
-                           for (Tarefa t : tarefasPorStatus) {
-                            int index = tarefasPorStatus.indexOf(t) + 1;
-                            System.out.println("\t" + index + ". " + t.getTitulo());
-                            System.out.println("\t" + t.getDescricao());
-                            System.out.println("\t(Status: " + (t.status() ? "Concluída" : "Pendente") +
-                                                    ". Criada em: " + t.getDataCriacao() +
-                                                    ". Prazo: " + t.getPrazo() + ")");
-                           }
-                        } else if (status == 2 ) {
+                            tarefasPorStatus = consultarPorStatus(usuario, true);
+                            for (Tarefa t : tarefasPorStatus) {
+                                int index = tarefasPorStatus.indexOf(t) + 1;
+                                System.out.println("\t" + index + ". " + t.getTitulo());
+                                System.out.println("\t" + t.getDescricao());
+                                System.out.println("\t(Status: " + (t.status() ? "Concluída" : "Pendente") +
+                                        ". Criada em: " + t.getDataCriacao() +
+                                        ". Prazo: " + t.getPrazo() + ")");
+                            }
+                        } else if (status == 2) {
                             ArrayList<Tarefa> tarefasPorStatus = new ArrayList<>();
                             tarefasPorStatus = consultarPorStatus(usuario, false);
                             for (Tarefa t : tarefasPorStatus) {
-                             int index = tarefasPorStatus.indexOf(t) + 1;
-                             System.out.println("\t" + index + ". " + t.getTitulo());
-                             System.out.println("\t" + t.getDescricao());
-                             System.out.println("\t(Status: " + (t.status() ? "Concluída" : "Pendente") +
-                                                     ". Criada em: " + t.getDataCriacao() +
-                                                     ". Prazo: " + t.getPrazo() + ")");
+                                int index = tarefasPorStatus.indexOf(t) + 1;
+                                System.out.println("\t" + index + ". " + t.getTitulo());
+                                System.out.println("\t" + t.getDescricao());
+                                System.out.println("\t(Status: " + (t.status() ? "Concluída" : "Pendente") +
+                                        ". Criada em: " + t.getDataCriacao() +
+                                        ". Prazo: " + t.getPrazo() + ")");
                             }
-                            //consultarPorStatus(usuario, false);
-                        } 
+                            // consultarPorStatus(usuario, false);
+                        }
 
-                        
-                    }else if(opcao == 2){
+                    } else if (opcao == 2) {
                         String categoria = input.nextLine();
                         consultarPorCategoria(usuario, categoria);
                     }
@@ -93,8 +91,8 @@ public class Main {
                     break;
                 case 3:
                     System.out.println("Selecione a categoria da nova tarefa:");
-                    for (int i = 0; i<categorias.size() ; i++){
-                        System.out.println(i + 1 + ". " +  categorias.get(i));
+                    for (int i = 0; i < categorias.size(); i++) {
+                        System.out.println(i + 1 + ". " + categorias.get(i));
                     }
                     int selected_category = input.nextInt();
                     input.nextLine();
@@ -109,12 +107,11 @@ public class Main {
                     Date prazo = obterPrazo(input);
 
                     String cat = categorias.get(selected_category - 1);
-                    //System.out.println(cat);
-                    Tarefa nova_task = new Tarefa(cat, title, description, prazo);
-                    usuario.adicionarTarefa(nova_task);
+                    Tarefa novaTarefa = new Tarefa(cat, title, description, prazo, usuario.getIndiceAtual());
+                    usuario.adicionarTarefa(novaTarefa);
 
-                    System.out.println("Tarefa adicionada com sucesso!");
-                    continuarOuSair(input, nomeUsuario);
+                    System.out.println("Tarefa adicionada com sucesso! Índice: " + novaTarefa.getIndice());
+
                     break;
                 case 4:
                     System.out.println("Digite o índice da tarefa para marcar ou desmarcar:");
@@ -123,11 +120,15 @@ public class Main {
                     usuario.marcarOuDesmarcar(indice);
                     continuarOuSair(input, nomeUsuario);
                     break;
-                case 5:
+                    case 5:
                     System.out.println("Digite o índice da tarefa para deletar:");
                     int indiceDeletar = input.nextInt();
                     input.nextLine();
+                
+                    indiceDeletar--;
+                
                     usuario.removerTarefa(indiceDeletar);
+                
                     continuarOuSair(input, nomeUsuario);
                     break;
                 case 6:
@@ -135,9 +136,15 @@ public class Main {
                     gui.exibir();
                     break;
                 case 7:
-                    System.out.println("Insira o nome da nova categoria: ");
+                    System.out.println("Insira o nome da nova categoria:");
                     String nomeCategoria = input.nextLine();
-                    categorias.add(nomeCategoria);
+
+                    if (nomeCategoria != null && !nomeCategoria.trim().isEmpty()) {
+                        categorias.add(nomeCategoria);
+                        System.out.println("Categoria '" + nomeCategoria + "' adicionada com sucesso!");
+                    } else {
+                        System.out.println("Nome de categoria inválido. Tente novamente.");
+                    }
                     break;
                 case 8:
                     System.out.println("Saindo...");
@@ -150,13 +157,12 @@ public class Main {
         }
     }
 
-
-    public static ArrayList<Tarefa> consultarPorCategoria(Usuario usuario, String categoria){
+    public static ArrayList<Tarefa> consultarPorCategoria(Usuario usuario, String categoria) {
         ArrayList<Tarefa> filtrado = new ArrayList<>();
 
-        for(int i=0; i <usuario.getAllTarefas().size(); i++){
-            
-            if(usuario.getAllTarefas().get(i).getCategoria().equals(categoria)){
+        for (int i = 0; i < usuario.getAllTarefas().size(); i++) {
+
+            if (usuario.getAllTarefas().get(i).getCategoria().equals(categoria)) {
                 filtrado.add(usuario.getAllTarefas().get(i));
             }
         }
@@ -164,12 +170,12 @@ public class Main {
         return filtrado;
     }
 
-    public static ArrayList<Tarefa> consultarPorStatus(Usuario usuario, boolean status){
+    public static ArrayList<Tarefa> consultarPorStatus(Usuario usuario, boolean status) {
         ArrayList<Tarefa> filtrado = new ArrayList<>();
 
-        for(int i=0; i <usuario.getAllTarefas().size(); i++){
-            
-            if(usuario.getAllTarefas().get(i).status() == status){
+        for (int i = 0; i < usuario.getAllTarefas().size(); i++) {
+
+            if (usuario.getAllTarefas().get(i).status() == status) {
                 filtrado.add(usuario.getAllTarefas().get(i));
             }
         }
