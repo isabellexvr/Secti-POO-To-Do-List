@@ -22,6 +22,7 @@ public class Usuario {
         tarefas.add(tarefa);
     }
 
+    // Adição do método getIndiceAtual()
     public int getIndiceAtual() {
         return indiceAtual;
     }
@@ -43,6 +44,7 @@ public class Usuario {
         }
     }
 
+    // Adição do método para remover tarefa por índice
     public void removerTarefa(int indexTarefa) {
         if (indexTarefa >= 0 && indexTarefa < tarefas.size()) {
             Tarefa tarefaRemovida = tarefas.remove(indexTarefa);

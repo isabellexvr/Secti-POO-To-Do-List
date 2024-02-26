@@ -86,13 +86,17 @@ public class ToDoListGUI extends JFrame {
         setVisible(true);
     }
 
+    // Dentro do método adicionarTarefa()
     private void adicionarTarefa() {
         SwingUtilities.invokeLater(() -> {
             String novaTarefa = campoTarefa.getText();
             String descricao = campoDescricao.getText();
+
+            // Adição da nova tarefa apenas se a categoria não for nula
             if (!novaTarefa.isEmpty() && !novaTarefa.equals("Digite Sua Tarefa:")) {
                 Date prazo = obterPrazo();
 
+                 // Criação da nova tarefa com índice
                 Tarefa tarefa = new Tarefa("Geral", novaTarefa, descricao, prazo, model.size() + 1);
                 usuario.adicionarTarefa(tarefa);
                 model.addElement(tarefa);
@@ -111,6 +115,8 @@ public class ToDoListGUI extends JFrame {
     private void removerTarefa() {
         SwingUtilities.invokeLater(() -> {
             int indiceSelecionado = listaTarefas.getSelectedIndex();
+
+            // Remoção da tarefa e exibição da mensagem
             if (indiceSelecionado != -1) {
                 usuario.removerTarefa(indiceSelecionado);
                 model.remove(indiceSelecionado);

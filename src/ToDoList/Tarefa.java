@@ -9,7 +9,8 @@ public class Tarefa {
     private Date dataCriacao, prazo;
     private int indice;
 
-    public Tarefa(String categoria, String titulo, String descricao, Date prazo,int indice) {
+    // Novo construtor com índice
+    public Tarefa(String categoria, String titulo, String descricao, Date prazo, int indice) {
         this.categoria = categoria;
         this.titulo = titulo;
         this.descricao = descricao;
@@ -18,6 +19,8 @@ public class Tarefa {
         this.prazo = prazo;
         this.indice = indice;
     }
+
+    // Método para definir o índice
     public void setIndice(int indice) {
         this.indice = indice;
     }
@@ -30,9 +33,11 @@ public class Tarefa {
         return titulo;
     }
 
-    public String getDescricao(){return descricao;}
+    public String getDescricao() {
+        return descricao;
+    }
 
-    public String getCategoria(){
+    public String getCategoria() {
         return categoria;
     }
 
@@ -51,11 +56,13 @@ public class Tarefa {
     public int getIndice() {
         return indice;
     }
+
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String statusStr = status() ? "Concluída" : "Pendente";
         String prazoStr = (prazo != null) ? sdf.format(prazo) : "Sem prazo";
-        return String.format("%s (Status: %s, Criada em: %s, Prazo: %s)", titulo, statusStr, sdf.format(dataCriacao), prazoStr);
+        return String.format("%s (Status: %s, Criada em: %s, Prazo: %s)", titulo, statusStr, sdf.format(dataCriacao),
+                prazoStr);
     }
 }
