@@ -28,27 +28,31 @@ public class Main {
 
             int escolha = input.nextInt();
             input.nextLine();
+            ArrayList<Tarefa> tasks =  usuario.getAllTarefas();
 
             switch (escolha) {
                 case 1:
-    ArrayList<Tarefa> tasks =  usuario.getAllTarefas();
-
-    if (tasks.isEmpty()) {
-        System.out.println("Você ainda não tem tarefas.");
-    } else {
-        System.out.println("Todas as tarefas de " + nomeUsuario + ":");
-        for (Tarefa tarefa : tasks) {
-            int index = tasks.indexOf(tarefa) + 1;
-            System.out.println("\t" + index + ". " + tarefa.getTitulo());
-            System.out.println("\t" + tarefa.getDescricao());
-            System.out.println("\t(Status: " + (tarefa.status() ? "Concluída" : "Pendente") +
-                    ". Criada em: " + tarefa.getDataCriacao() +
-                    ". Prazo: " + tarefa.getPrazo() + ")");
-        }
-    }
-    continuarOuSair(input, nomeUsuario);
-    break;
+                    if (tasks.isEmpty()) {
+                        System.out.println("Você ainda não tem tarefas.");
+                    } else {
+                        System.out.println("Todas as tarefas de " + nomeUsuario + ":");
+                        for (Tarefa tarefa : tasks) {
+                            int index = tasks.indexOf(tarefa) + 1;
+                            System.out.println("\t- Tarefa 0" + index + ": " + tarefa.getTitulo());
+                            System.out.println("\t\t* Título:" + tarefa.getTitulo());
+                            System.out.println("\t\t* Descrição:" + tarefa.getDescricao());
+                            System.out.println("\t\t(Status: " + (tarefa.status() ? "Concluída" : "Pendente") +
+                                    ". Criada em: " + tarefa.getDataCriacao() +
+                                    ". Prazo: " + tarefa.getPrazo() + ")");
+                        }
+                    }
+                    continuarOuSair(input, nomeUsuario);
+                    break;
                 case 2:
+                    if (tasks.isEmpty()) {
+                        System.out.println("Você ainda não tem tarefas.");
+                        break;
+                    }
                     System.out.println("Como quer consultar a tarefa?");
                     System.out.println("1. Por status");
                     System.out.println("2. Por categoria");
@@ -114,6 +118,10 @@ public class Main {
 
                     break;
                 case 4:
+                    if (tasks.isEmpty()) {
+                        System.out.println("Você ainda não tem tarefas.");
+                        break;
+                    }
                     System.out.println("Digite o índice da tarefa para marcar ou desmarcar:");
                     int indice = input.nextInt();
                     input.nextLine();
@@ -121,6 +129,10 @@ public class Main {
                     continuarOuSair(input, nomeUsuario);
                     break;
                     case 5:
+                        if (tasks.isEmpty()) {
+                            System.out.println("Você ainda não tem tarefas.");
+                            break;
+                        }
                     System.out.println("Digite o índice da tarefa para deletar:");
                     int indiceDeletar = input.nextInt();
                     input.nextLine();
@@ -203,7 +215,7 @@ public class Main {
     }
 
     public static void exibirMenu(String nomeUsuario) {
-        System.out.println("To-Do-List\n\n");
+        System.out.println("To-Do-List\n");
         System.out.println("Seja bem-vindo(a), " + nomeUsuario + "!\n");
         System.out.println("Insira um número para cada funcionalidade:");
         System.out.println("1. Listar todas as tarefas");
